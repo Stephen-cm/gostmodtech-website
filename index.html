@@ -1,261 +1,71 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GostmodTech</title>
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  :root {
-    --bg: #0a0e17;
-    --bg2: #0f1520;
-    --bg3: #141c2e;
-    --green: #00ff41;
-    --green2: #00cc33;
-    --blue: #0080ff;
-    --text: #c8d8e8;
-    --muted: #5a7a8a;
-    --border: #1a2a3a;
-    --card: #111827;
-  }
-  body { background: var(--bg); color: var(--text); font-family: 'Courier New', monospace; font-size: 14px; line-height: 1.6; }
-  nav { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 56px; position: sticky; top: 0; z-index: 100; }
-  .logo { color: var(--green); font-size: 18px; font-weight: bold; letter-spacing: 2px; }
-  .logo span { color: #fff; }
-  .nav-links { display: flex; gap: 1.5rem; }
-  .nav-links a { color: var(--muted); text-decoration: none; font-size: 13px; letter-spacing: 1px; cursor: pointer; transition: color 0.2s; }
-  .nav-links a:hover { color: var(--green); }
-  .nav-btn { background: transparent; border: 1px solid var(--green); color: var(--green); padding: 6px 16px; font-family: monospace; font-size: 12px; cursor: pointer; letter-spacing: 1px; }
-  .nav-btn:hover { background: var(--green); color: #000; }
-  section { padding: 4rem 2rem; max-width: 900px; margin: 0 auto; }
-  .hero { text-align: center; padding: 5rem 2rem; max-width: 900px; margin: 0 auto; }
-  .terminal-tag { color: var(--green); font-size: 13px; letter-spacing: 3px; margin-bottom: 1rem; }
-  .hero h1 { font-size: 36px; color: #fff; font-weight: bold; margin-bottom: 0.5rem; letter-spacing: 2px; }
-  .hero h1 span { color: var(--green); }
-  .hero .sub { color: var(--muted); font-size: 14px; margin-bottom: 0.5rem; letter-spacing: 1px; }
-  .hero .desc { color: var(--text); font-size: 14px; max-width: 560px; margin: 1rem auto 2rem; line-height: 1.8; }
-  .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-  .btn-primary { background: var(--green); color: #000; border: none; padding: 10px 28px; font-family: monospace; font-size: 13px; font-weight: bold; cursor: pointer; letter-spacing: 1px; }
-  .btn-primary:hover { background: var(--green2); }
-  .btn-secondary { background: transparent; color: var(--green); border: 1px solid var(--green); padding: 10px 28px; font-family: monospace; font-size: 13px; cursor: pointer; letter-spacing: 1px; }
-  .btn-secondary:hover { background: rgba(0,255,65,0.08); }
-  .prompt { color: var(--green); margin-right: 6px; }
-  .cursor { display: inline-block; width: 8px; height: 14px; background: var(--green); vertical-align: middle; animation: blink 1s infinite; }
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-  .section-label { color: var(--green); font-size: 12px; letter-spacing: 3px; margin-bottom: 0.5rem; }
-  .section-title { color: #fff; font-size: 22px; font-weight: bold; margin-bottom: 0.5rem; }
-  .section-line { width: 40px; height: 2px; background: var(--green); margin-bottom: 2rem; }
-  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin: 3rem 0; max-width: 900px; margin-left: auto; margin-right: auto; padding: 0 2rem; }
-  .stat-card { background: var(--card); border: 1px solid var(--border); padding: 1.2rem; text-align: center; }
-  .stat-num { color: var(--green); font-size: 28px; font-weight: bold; }
-  .stat-label { color: var(--muted); font-size: 11px; letter-spacing: 2px; margin-top: 4px; }
-  .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
-  .service-card { background: var(--card); border: 1px solid var(--border); padding: 1.5rem; transition: border-color 0.2s; }
-  .service-card:hover { border-color: var(--green); }
-  .service-icon { color: var(--green); font-size: 22px; margin-bottom: 1rem; }
-  .service-card h3 { color: #fff; font-size: 15px; margin-bottom: 0.5rem; letter-spacing: 1px; }
-  .service-card p { color: var(--muted); font-size: 13px; line-height: 1.7; }
-  .service-tag { display: inline-block; background: rgba(0,255,65,0.08); color: var(--green); border: 1px solid rgba(0,255,65,0.2); font-size: 11px; padding: 2px 8px; margin-top: 1rem; margin-right: 4px; letter-spacing: 1px; }
-  .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; }
-  .tool-card { background: var(--card); border: 1px solid var(--border); padding: 1rem; display: flex; align-items: center; gap: 12px; }
-  .tool-dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; flex-shrink: 0; }
-  .tool-name { color: var(--text); font-size: 13px; }
-  .tool-cat { color: var(--muted); font-size: 11px; letter-spacing: 1px; }
-  .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
-  .blog-card { background: var(--card); border: 1px solid var(--border); padding: 1.2rem; }
-  .blog-date { color: var(--muted); font-size: 11px; letter-spacing: 2px; margin-bottom: 0.5rem; }
-  .blog-card h3 { color: #fff; font-size: 14px; margin-bottom: 0.5rem; line-height: 1.5; }
-  .blog-card p { color: var(--muted); font-size: 12px; line-height: 1.7; }
-  .blog-tag { display: inline-block; color: var(--blue); font-size: 11px; margin-top: 0.8rem; letter-spacing: 1px; }
-  .contact-box { background: var(--card); border: 1px solid var(--border); padding: 2rem; }
-  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
-  .contact-item { margin-bottom: 1.2rem; }
-  .contact-label { color: var(--green); font-size: 12px; letter-spacing: 2px; }
-  .contact-val { color: var(--text); font-size: 13px; }
-  .form-group { margin-bottom: 1rem; }
-  .form-group label { color: var(--muted); font-size: 12px; letter-spacing: 1px; display: block; margin-bottom: 4px; }
-  .form-group input, .form-group textarea { width: 100%; background: var(--bg3); border: 1px solid var(--border); color: var(--text); padding: 8px 12px; font-family: monospace; font-size: 13px; outline: none; }
-  .form-group input:focus, .form-group textarea:focus { border-color: var(--green); }
-  .form-group textarea { height: 80px; resize: vertical; }
-  footer { background: var(--bg2); border-top: 1px solid var(--border); text-align: center; padding: 1.5rem; color: var(--muted); font-size: 12px; letter-spacing: 1px; }
-  footer span { color: var(--green); }
-  .divider { border: none; border-top: 1px solid var(--border); }
-</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Home | GostModTech</title>
+<meta name="description" content="GostModTech offers cybersecurity, database administration, cloud, OSINT, and technology training content.">
+<link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
-<nav>
-  <div class="logo">GOSTMOD<span>TECH</span></div>
-  <div class="nav-links">
-    <a>~/about</a>
-    <a>~/services</a>
-    <a>~/tools</a>
-    <a>~/blog</a>
-    <a>~/contact</a>
-  </div>
-  <button class="nav-btn" onclick="sendPrompt('Help me write a hire me message for gostmodtech.com')">hire me ↗</button>
-</nav>
+<header class="topbar"><div class="container nav">
+<a class="logo" href="index.html">GOSTMOD<span>TECH</span></a>
+<button class="mobile">Menu</button>
+<nav class="menu">
+<a href="index.html">Home</a>
+<a href="services.html">Services</a>
+<a href="cybersecurity.html">Cybersecurity</a>
+<a href="dba.html">DBA</a>
+<a href="tutorials.html">Tutorials</a>
+<a href="blog.html">Blog</a>
+<a href="resources.html">Resources</a>
+<a class="btn" href="contact.html">Hire Me</a>
+</nav></div></header>
 
-<div class="hero">
-  <div class="terminal-tag">// INITIALIZING SYSTEM...</div>
-  <h1>GOSTMOD<span>TECH</span></h1>
-  <div class="sub">Cybersecurity Professional &amp; Database Administrator</div>
-  <div style="color:var(--muted); font-size:13px; margin-top:6px;">
-    <span class="prompt">root@gostmodtech:~$</span> whoami<span class="cursor"></span>
-  </div>
-  <div class="desc">
-    Security researcher, OSINT specialist, and DBA based in Lagos, Nigeria. 
-    Protecting systems, investigating threats, and managing critical data infrastructure — 
-    operating under the <strong style="color:var(--green)">gostmod</strong> brand.
-  </div>
-  <div class="hero-btns">
-    <button class="btn-primary" onclick="sendPrompt('What cybersecurity services does gostmodtech.com offer?')">view services ↗</button>
-    <button class="btn-secondary" onclick="sendPrompt('How can I contact GostmodTech?')">get in touch</button>
-  </div>
-</div>
 
-<div class="stats">
-  <div class="stat-card"><div class="stat-num">3+</div><div class="stat-label">YRS EXPERIENCE</div></div>
-  <div class="stat-card"><div class="stat-num">24+</div><div class="stat-label">OSINT TOOLS</div></div>
-  <div class="stat-card"><div class="stat-num">100%</div><div class="stat-label">DEDICATION</div></div>
-  <div class="stat-card"><div class="stat-num">NG</div><div class="stat-label">BASED IN LAGOS</div></div>
-</div>
-
-<hr class="divider">
-
-<section>
-  <div class="section-label">// WHAT I DO</div>
-  <div class="section-title">Services</div>
-  <div class="section-line"></div>
-  <div class="services-grid">
-    <div class="service-card">
-      <div class="service-icon">[SEC]</div>
-      <h3>CYBERSECURITY</h3>
-      <p>Threat analysis, malware investigation, incident response, and security assessments for individuals and businesses.</p>
-      <span class="service-tag">MALWARE ANALYSIS</span>
-      <span class="service-tag">INCIDENT RESPONSE</span>
-      <span class="service-tag">OSINT</span>
-    </div>
-    <div class="service-card">
-      <div class="service-icon">[DBA]</div>
-      <h3>DATABASE ADMIN</h3>
-      <p>Database design, optimization, backup strategies, and security hardening for SQL and NoSQL environments.</p>
-      <span class="service-tag">SQL</span>
-      <span class="service-tag">OPTIMIZATION</span>
-      <span class="service-tag">SECURITY</span>
-    </div>
-    <div class="service-card">
-      <div class="service-icon">[RES]</div>
-      <h3>SECURITY RESEARCH</h3>
-      <p>OSINT investigations, threat intelligence gathering, and vulnerability research using industry-standard tools.</p>
-      <span class="service-tag">THREAT INTEL</span>
-      <span class="service-tag">RECON</span>
-      <span class="service-tag">REPORTING</span>
-    </div>
+<section class="hero">
+ <div class="container hero-grid">
+  <div>
+   <div class="kicker">// Cybersecurity • DBA • Cloud • Training</div>
+   <h1>Build safer systems with <span>GostModTech</span>.</h1>
+   <p class="lead">A professional technology brand focused on cybersecurity awareness, database administration, OSINT education, cloud infrastructure, and practical tech training.</p>
+   <a class="btn fill" href="contact.html">Hire GostModTech</a> <a class="btn" href="tutorials.html">Start Learning</a>
   </div>
+  <div class="terminal">
+   <div class="term-head">root@gostmodtech:~$ mission</div>
+   <div class="term-body">
+    <div class="line"><span class="prompt">></span> protect systems</div>
+    <div class="line"><span class="prompt">></span> secure databases</div>
+    <div class="line"><span class="prompt">></span> teach cyber safety</div>
+    <div class="line"><span class="prompt">></span> build public tech knowledge</div>
+   </div>
+  </div>
+ </div>
+ <div class="container stats">
+  <div class="stat"><strong>Cyber</strong><span>Security awareness and OSINT</span></div>
+  <div class="stat"><strong>DBA</strong><span>SQL Server, PostgreSQL, AWS RDS</span></div>
+  <div class="stat"><strong>Cloud</strong><span>AWS, GitHub, Netlify, automation</span></div>
+  <div class="stat"><strong>Learn</strong><span>Tutorials and guides</span></div>
+ </div>
 </section>
+<section class="section"><div class="container">
+ <div class="kicker">// Services</div><h2>Professional services and learning content</h2>
+ <p class="intro">GostModTech helps individuals, students, and small businesses understand cybersecurity, protect data, manage databases, and learn modern technology through practical guides.</p>
+ <div class="grid">
+  <div class="card"><h3>Cybersecurity Services</h3><p>Security awareness, OSINT research, basic incident response guidance, threat intelligence learning, and safe online practices.</p><span class="tag">OSINT</span><span class="tag">Kali</span></div>
+  <div class="card"><h3>Database Administration</h3><p>Database security, backup planning, performance tuning, SQL Server, PostgreSQL, cloud database guidance, and migration education.</p><span class="tag">SQL</span><span class="tag">AWS RDS</span></div>
+  <div class="card"><h3>Technology Training</h3><p>Step-by-step tutorials covering Termux, MCP servers, GitHub, Netlify, database tools, and cybersecurity fundamentals.</p><span class="tag">Tutorials</span><span class="tag">Hands-on</span></div>
+ </div>
+</div></section>
+<section class="section"><div class="container cta">
+ <div><div class="kicker">// Work with GostModTech</div><h2>Need help with security, database, or tech training?</h2><p class="intro">Send a message and explain what you need. Remote work and online training are welcome.</p></div>
+ <a class="btn fill" href="contact.html">Contact Now</a>
+</div></section>
 
-<hr class="divider">
 
-<section>
-  <div class="section-label">// OSINT ARSENAL</div>
-  <div class="section-title">Tools I Use</div>
-  <div class="section-line"></div>
-  <div class="tools-grid">
-    <div class="tool-card"><div class="tool-dot"></div><div><div class="tool-name">Shodan</div><div class="tool-cat">RECON</div></div></div>
-    <div class="tool-card"><div class="tool-dot"></div><div><div class="tool-name">Nmap</div><div class="tool-cat">NETWORK SCAN</div></div></div>
-    <div class="tool-card"><div class="tool-dot"></div><div><div class="tool-name">Sherlock</div><div class="tool-cat">USERNAME OSINT</div></div></div>
-    <div class="tool-card"><div class="tool-dot"></div><div><div class="tool-name">theHarvester</div><div class="tool-cat">EMAIL RECON</div></div></div>
-    <div class="tool-card"><div class="tool-dot"></div><div><div class="tool-name">Wireshark</div><div class="tool-cat">PACKET ANALYSIS</div></div></div>
-    <div class="tool-card"><div class="tool-dot"></div><div><div class="tool-name">Maltego</div><div class="tool-cat">LINK ANALYSIS</div></div></div>
-    <div class="tool-card"><div class="tool-dot"></div><div><div class="tool-name">ANY.RUN</div><div class="tool-cat">MALWARE SANDBOX</div></div></div>
-    <div class="tool-card"><div class="tool-dot"></div><div><div class="tool-name">Censys</div><div class="tool-cat">ASSET DISCOVERY</div></div></div>
-    <div class="tool-card"><div class="tool-dot"></div><div><div class="tool-name">Maigret</div><div class="tool-cat">PROFILING</div></div></div>
-    <div class="tool-card"><div class="tool-dot"></div><div><div class="tool-name">Kali Linux</div><div class="tool-cat">PENTESTING OS</div></div></div>
-    <div class="tool-card"><div class="tool-dot"></div><div><div class="tool-name">Ollama</div><div class="tool-cat">LOCAL AI</div></div></div>
-    <div class="tool-card"><div class="tool-dot"></div><div><div class="tool-name">Parrot OS</div><div class="tool-cat">SECURITY OS</div></div></div>
-  </div>
-</section>
-
-<hr class="divider">
-
-<section>
-  <div class="section-label">// KNOWLEDGE BASE</div>
-  <div class="section-title">Latest Content</div>
-  <div class="section-line"></div>
-  <div class="blog-grid">
-    <div class="blog-card">
-      <div class="blog-date">// JUNE 2026</div>
-      <h3>How I Detected a MeshAgent RAT on a Windows System</h3>
-      <p>A real-world walkthrough of identifying and remediating a hacktool.meshagent infection found in a non-standard svchost path.</p>
-      <div class="blog-tag">#MALWARE #INCIDENT-RESPONSE</div>
-    </div>
-    <div class="blog-card">
-      <div class="blog-date">// MAY 2026</div>
-      <h3>OSINT on Termux: Setting Up 10 Tools on Unrooted Android</h3>
-      <p>Step-by-step guide to running nmap, Sherlock, Maigret and more on an Android device without root access.</p>
-      <div class="blog-tag">#OSINT #TERMUX #ANDROID</div>
-    </div>
-    <div class="blog-card">
-      <div class="blog-date">// APR 2026</div>
-      <h3>DBA Security: Hardening Your Database Against Common Attacks</h3>
-      <p>Practical SQL database hardening techniques every DBA should implement to protect critical data infrastructure.</p>
-      <div class="blog-tag">#DBA #DATABASE #SECURITY</div>
-    </div>
-  </div>
-</section>
-
-<hr class="divider">
-
-<section>
-  <div class="section-label">// GET IN TOUCH</div>
-  <div class="section-title">Hire Me</div>
-  <div class="section-line"></div>
-  <div class="contact-box">
-    <div class="contact-grid">
-      <div>
-        <div style="color:var(--muted); font-size:13px; margin-bottom:1.5rem; line-height:1.8;">
-          Available for cybersecurity consulting, DBA work, OSINT investigations, and security research. Based in Lagos — remote work welcome.
-        </div>
-        <div class="contact-item">
-          <div class="contact-label">EMAIL</div>
-          <div class="contact-val">gostmodtech@gmail.com</div>
-        </div>
-        <div class="contact-item">
-          <div class="contact-label">DOMAIN</div>
-          <div class="contact-val">gostmodtech.com</div>
-        </div>
-        <div class="contact-item">
-          <div class="contact-label">LOCATION</div>
-          <div class="contact-val">Lagos, Nigeria 🇳🇬</div>
-        </div>
-        <div class="contact-item">
-          <div class="contact-label">AVAILABILITY</div>
-          <div class="contact-val" style="color:var(--green)">● OPEN TO WORK</div>
-        </div>
-      </div>
-      <div>
-        <div class="form-group">
-          <label>// YOUR NAME</label>
-          <input type="text" placeholder="John Doe">
-        </div>
-        <div class="form-group">
-          <label>// YOUR EMAIL</label>
-          <input type="email" placeholder="john@example.com">
-        </div>
-        <div class="form-group">
-          <label>// MESSAGE</label>
-          <textarea placeholder="I need help with..."></textarea>
-        </div>
-        <button class="btn-primary" style="width:100%;" onclick="sendPrompt('Help me write a professional response to a client inquiry for cybersecurity or DBA services')">send message ↗</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div>root@<span>gostmodtech.com</span>:~$ echo "built with passion" &nbsp;|&nbsp; <span>© 2026 GostmodTech</span></div>
-</footer>
+<footer class="footer"><div class="container">© 2026 GostModTech. Cybersecurity • Database Administration • Cloud • Training</div></footer>
+<script src="assets/js/main.js"></script>
 
 </body>
 </html>
